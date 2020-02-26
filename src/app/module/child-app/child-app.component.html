@@ -1,0 +1,38 @@
+<br>
+<h2 style="text-align: center;"> User Lists </h2>
+<ng-container *ngIf="userLists && userLists.length !== 0; else notAvailable">
+    <table style="width:100%">
+        <tr>
+            <th>S. No.</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Contact No.</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+        <tr *ngFor="let user of userLists  index as i">
+            <td style="text-align: center;">{{i+1}}</td>
+            <ng-container *ngIf="!user.editFlag; else editUser">
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.password}}</td>
+                <td>{{user.contact}}</td>
+            </ng-container>
+            <ng-template #editUser>
+                <td><input (keyup.enter)="editUserDetail(user); user.editFlag = false" [(ngModel)]="user.name"></td>
+                <td><input (keyup.enter)="editUserDetail(user); user.editFlag = false" [(ngModel)]="user.email"></td>
+                <td><input (keyup.enter)="editUserDetail(user); user.editFlag = false" [(ngModel)]="user.password"> </td>
+                <td><input (keyup.enter)="editUserDetail(user); user.editFlag = false" [(ngModel)]="user.contact"></td>
+            </ng-template>  
+            <td style="text-align: center;"> <i class="fa fa-trash" aria-hidden="true" (click)="deletUser(user)"></i>
+            </td>
+            <td style="text-align: center;">
+                <i class="fa fa-edit" aria-hidden="true" (click)="editUserDetail(user); user.editFlag=!user.editFlag"></i>
+            </td>
+        </tr>
+    </table>
+</ng-container>
+<ng-template #notAvailable>
+    <h1>User is not Available</h1>
+</ng-template>
