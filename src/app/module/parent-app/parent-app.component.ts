@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserListService } from 'src/app/services/user-list.service';
+import { UtilService } from '../../services/util.service';
 
 @Component({
   selector: 'app-parent-app',
@@ -11,11 +12,11 @@ export class ParentAppComponent implements OnInit {
 
 
   registerForm: FormGroup;
-  user: any;
   submitted = false;
   error: string;
   constructor(private formBuilder: FormBuilder,
-              private userListService: UserListService) { }
+              private userListService: UserListService,
+              private utilService: UtilService) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -45,8 +46,8 @@ export class ParentAppComponent implements OnInit {
     };
     this.userListService.addUserDetail(requestBody)
       .then(response => {
-        this.user = userDetail;
-        alert(`Successfully user added`);
+          this.utilService.addUserDetail.next(userDetail);
+          alert(`Successfully user added`);
       })
       .catch(err => console.log(err));
   }

@@ -1,30 +1,29 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { UserListService } from '../../services/user-list.service';
 import { userDetail } from '../../shared/user-detail-model';
+import { UtilService } from '../../services/util.service';
 
 @Component({
   selector: 'app-child-app',
   templateUrl: './child-app.component.html',
   styleUrls: ['./child-app.component.scss']
 })
-export class ChildAppComponent implements OnInit, OnChanges {
+export class ChildAppComponent implements OnInit {
 
-  constructor(private userListService: UserListService) { }
-
-
-  @Input() userDetails: any;
+  constructor(private userListService: UserListService,
+              private utilService: UtilService) { }
 
   userLists: userDetail[];
 
   ngOnInit() {
     this.getUserLists();
-  }
-
-  ngOnChanges() {
-    if (this.userDetails) {
-      this.userLists.push(this.userDetails);
-    }
+    this.utilService.GetUserDetails().subscribe(userDetail => {
+      if (userDetail) {
+        this.userLists.push(userDetail);
+        this.utilService.addUserDetail.next(null);
+      }
+    });
   }
 
   getUserLists() {
